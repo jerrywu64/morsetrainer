@@ -1,0 +1,7 @@
+.dropbox
+*.stats
+*.txt
+*.pyc
+*~
+*.ini
+
