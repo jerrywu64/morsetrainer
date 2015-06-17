@@ -4,22 +4,24 @@ import time
 
 def processAnswer(cin, partime, starttime, key, answer, curstats):
     if cin == answer:
-        endtime = time.clock()
-        taken = endtime - starttime
         print "Correct!"
         if not partime == 0:
+            endtime = time.clock()
+            taken = endtime - starttime
             print "The time taken was " + str(taken) + " seconds."
             bonsu = 20 * (partime / (taken + partime * partime) - partime / (partime + partime * partime ) ) 
             print "Your time bonus is: " + str(bonsu)
-            curstats.tbonsu[key] = curstats.tbonsu[key] + bonsu
-            curstats.ttb = curstats.ttb + bonsu
-
-        curstats.wins[key] = curstats.wins[key] + 1
-        curstats.tw = curstats.tw + 1
+            if curstats is not None:
+                curstats.tbonsu[key] = curstats.tbonsu[key] + bonsu
+                curstats.ttb = curstats.ttb + bonsu
+        if curstats is not None:
+            curstats.wins[key] = curstats.wins[key] + 1
+            curstats.tw = curstats.tw + 1
     else:
         print "Incorrect, the correct answer is: ", answer
-        curstats.losses[key] = curstats.losses[key] + 1
-        curstats.tl = curstats.tl + 1
+        if curstats is not None:
+            curstats.losses[key] = curstats.losses[key] + 1
+            curstats.tl = curstats.tl + 1
     print ""
     return
 
@@ -38,12 +40,12 @@ def printStartText():
     print "your stats, you can type \"/stats\". The stats output is"
     print "a bit rudimentary right now, however."
     print ""
-    print "A quiz timer has been implemented."
-    print "Enter a floating-point number to select a par time in seconds."
-    print "If you don't want to play with a timer, choose 0."
     return
     
 def getPartime(curstats, data):
+    print "A quiz timer has been implemented."
+    print "Enter a floating-point number to select a par time in seconds."
+    print "If you don't want to play with a timer, choose 0."
     partime = -1
     while partime < 0:
         try:
@@ -74,7 +76,7 @@ def getPartime(curstats, data):
 
 
 
-def quiz(data, curstats):
+def quiz(curstats, data):
     printStartText()
     partime, cin = getPartime(curstats, data)
     if cin is not None:

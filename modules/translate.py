@@ -3,7 +3,7 @@ from encode import encodeString
 from decode import decodeString
 import utils
 
-def translate(data, curstats):
+def translate(curstats, data):
     print "Welcome to Translate Mode. In this mode, you will translate"
     print "period-delimited and line-delimited sentences both to and from Morse Code."
     # print "As usual, type \"/exit\" to exit, and \"/help\" for a list of commands,"

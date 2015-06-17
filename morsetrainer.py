@@ -1,8 +1,8 @@
 from modules.quiz import quiz
 from modules.stats import Stats
 from modules.translate import translate
+from modules.listen import listen
 import modules.utils as utils
-
 
 # Read in characters and codes from file
 data={}
@@ -21,9 +21,9 @@ for line in f:
 
 # Initialize stats tracker, which also has user input username
 curstats = Stats(data)
-
-print "Type \"quiz\" to play Quiz Mode or \"translate\""
-print "to play translate mode. Alternatively, type any command."
+print "Type \"quiz\" to play Quiz Mode, \"translate\""
+print "to play translate mode, or \"listen\" to play listen"
+print "mode. Alternatively, type any command."
 print "Type \"/help\" for a list of commands."
 cin, pcval = utils.getInput(curstats, data, "Enter another command or select a mode.")
 cin = cin.lower()
@@ -35,13 +35,19 @@ try:
         elif cin == "quiz":
             # Run quiz mode, and track the return value
             # so we can see if we're exiting the program itself.
-            lastcmd = quiz(data, curstats)
+            lastcmd = quiz(curstats, data)
             if lastcmd == "/exit!" or lastcmd == "/rq": # Kind of hacky but w/e
                 break
             print "Type \"/exit\" to exit Morsetrainer, or "
             print "enter a command or select a mode."
         elif cin == "translate":
-            lastcmd = translate(data, curstats)
+            lastcmd = translate(curstats, data)
+            if lastcmd == "/exit!" or lastcmd == "/rq":
+                break
+            print "Type \"/exit\" to exit Morsetrainer, or "
+            print "enter a command or select a mode."
+        elif cin == "listen":
+            lastcmd = listen(curstats, data)
             if lastcmd == "/exit!" or lastcmd == "/rq":
                 break
             print "Type \"/exit\" to exit Morsetrainer, or "
