@@ -2,7 +2,28 @@ import random
 import utils
 import time
 
-def quiz(data, curstats):
+def processAnswer(cin, partime, starttime, key, answer, curstats):
+    if cin == answer:
+        endtime = time.clock()
+        taken = endtime - starttime
+        print "Correct!"
+        if not partime == 0:
+            print "The time taken was " + str(taken) + " seconds."
+            bonsu = 20 * (partime / (taken + partime * partime) - partime / (partime + partime * partime ) ) 
+            print "Your time bonus is: " + str(bonsu)
+            curstats.tbonsu[key] = curstats.tbonsu[key] + bonsu
+            curstats.ttb = curstats.ttb + bonsu
+
+        curstats.wins[key] = curstats.wins[key] + 1
+        curstats.tw = curstats.tw + 1
+    else:
+        print "Incorrect, the correct answer is: ", answer
+        curstats.losses[key] = curstats.losses[key] + 1
+        curstats.tl = curstats.tl + 1
+    print ""
+    return
+
+def printStartText():
     print "Welcome to Quiz mode!"
     print "Weighted randomization has been implemented"
     print "So letters you do worse in, or which haven't come up recently"
@@ -20,13 +41,16 @@ def quiz(data, curstats):
     print "A quiz timer has been implemented."
     print "Enter a floating-point number to select a par time in seconds."
     print "If you don't want to play with a timer, choose 0."
+    return
+    
+def getPartime(curstats, data):
     partime = -1
     while partime < 0:
         try:
             cin, pcval = utils.getInput(curstats, data, "Enter another command, or choose a par time.")
             if pcval == -1:
                 print "Exiting Quiz mode."
-                return cin
+                return partime, cin
             partime = float(cin)
             if partime < 0:
                 print "You need to choose a nonnegative par time."
@@ -45,8 +69,16 @@ def quiz(data, curstats):
         cin, pcval = utils.getInput(curstats, data, "Press <ENTER> or enter any non-command to begin.")
         if pcval == -1:
             print "Exiting Quiz mode."
-            return cin
+            return partime, cin
+    return partime, None
 
+
+
+def quiz(data, curstats):
+    printStartText()
+    partime, cin = getPartime(curstats, data)
+    if cin is not None:
+        return cin
 
     # Trackers so more recent keys aren't as likely to be generated.
     turns = 0
@@ -72,24 +104,7 @@ def quiz(data, curstats):
             if pcval == -1:
                 print "Exiting Quiz mode."
                 return cin
-            if cin == data["morse"][letter]:
-                endtime = time.clock()
-                taken = endtime - starttime
-                print "Correct!"
-                if not partime == 0:
-                    print "The time taken was " + str(taken) + " seconds."
-                    bonsu = 20 * (partime / (taken + partime * partime) - partime / (partime + partime * partime ) ) 
-                    print "Your time bonus is: " + str(bonsu)
-                    curstats.tbonsu[letter] = curstats.tbonsu[letter] + bonsu
-                    curstats.ttb = curstats.ttb + bonsu
-
-                curstats.wins[letter] = curstats.wins[letter] + 1
-                curstats.tw = curstats.tw + 1
-            else:
-                print "Incorrect, the correct answer is: ", data["morse"][letter]
-                curstats.losses[letter] = curstats.losses[letter] + 1
-                curstats.tl = curstats.tl + 1
-            print ""
+            processAnswer(cin.upper(), partime, starttime, letter, data["morse"][letter], curstats)
         else:
             code = utils.getKey(data["codes"], lastused, turns, curstats, data["debug"]) 
             lastused[code] = turns
@@ -105,20 +120,4 @@ def quiz(data, curstats):
             if pcval == -1:
                 print "Exiting Quiz mode."
                 return cin
-            if cin.upper() == data["demorse"][code]:
-                endtime = time.clock()
-                taken = endtime - starttime
-                print "Correct!"
-                if not partime == 0:
-                    print "The time taken was " + str(taken) + " seconds."
-                    bonsu = 20 * (partime / (taken + partime * partime) - partime / (partime + partime * partime ) ) 
-                    print "Your time bonus is: " + str(bonsu)
-                    curstats.tbonsu[code] = curstats.tbonsu[code] + bonsu
-                    curstats.ttb = curstats.ttb + bonsu
-
-                curstats.wins[code] = curstats.wins[code] + 1
-                curstats.tw = curstats.tw + 1
-            else:
-                print "Incorrect, the correct answer is: ", data["demorse"][code] 
-                curstats.losses[code] = curstats.losses[code] + 1
-                curstats.tl = curstats.tl + 1
+            processAnswer(cin.upper(), partime, starttime, code, data["demorse"][code], curstats)

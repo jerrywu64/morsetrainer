@@ -1,26 +1,31 @@
 import random
 from encode import encodeString
 from decode import decodeString
+import utils
 
 def translate(data, curstats):
     print "Welcome to Translate Mode. In this mode, you will translate"
     print "period-delimited and line-delimited sentences both to and from Morse Code."
     # print "As usual, type \"/exit\" to exit, and \"/help\" for a list of commands,"
-    print "Commands are not enabled for Translate mode. Type \"/exit\" to exit."
+    print "Standard commands are enabled for Translate Mode. Type \"/exit\" to exit."
     print "Note that stats are NOT currently being tracked for Translate Mode."
+    print "Consequently, /stats will give you the stats for Quiz Mode."
     print "Translate mode is still rather rudimentary, but it works for now."
     f = None
     while f is None:
-        filename = raw_input("Specify an input file for sample translation text.\n")
+        print "Specify an input file for sample translation text."
+        filename, pcval = utils.getInput(curstats, data, "Specify an input file for sample translation text.")
+        if pcval == -1:
+            print "Exiting Translate Mode."
+            return filename
         try:
-            # while processCommand(filename) > 0:
-            #    filename = raw_input("Specify an input file for sample translation text.\n")
             f = open(filename, "r")
         except:
             print "Error, invalid input file given."
     sentences = []
     for line in f:
-        splitline = line.split(".")
+        # Splitting by periods and lines, essentially. Rudimentary and doesn't work super well but whatever.
+        splitline = line.split(".") 
         for sentence in splitline:
             sentence = sentence.strip().upper()
             modified = ""
@@ -29,18 +34,29 @@ def translate(data, curstats):
                     modified= modified + char 
             if not sentence == "":
                 sentences.append(modified)
-    print "Fileread successful. Sentences will be given to you in random order."
-    random.shuffle(sentences)
+    print "Fileread successful. Do you want to randomize the order of the input sentences? (y/n)"
+    while True:
+        rand, pcval = utils.getInput(curstats, data, "Do you want to randomize the order of the input sentences? (y/n)")
+        if pcval == -1:
+            print "Exiting Translate Mode."
+            return rand
+        if rand.lower() == "y":
+            random.shuffle(sentences)
+            print "Sentence order randomized."
+            break
+        if rand.lower() == "n":
+            print "Sentence order preserved."
+            break
     # print sentences
     for sentence in sentences:
         if random.randint(0, 1) == 0:
             print "Translate the following sentence into Morse Code:"
             encoded = encodeString(sentence, data["morse"])
             print decodeString(encoded, data["demorse"]) # sigh stupid edge cases
-            cin = raw_input()
-            if cin == "/exit" or cin == "/exit!":
-                print "Exiting Translate Mode."
-                return cin
+            cin, pcval = utils.getInput(curstats, data, "Translate the following sentence into Morse Code:\n"+decodeString(encoded, data["demorse"]))
+            if pcval == -1:
+                 print "Exiting Translate Mode."
+                 return cin
             decoded = decodeString(cin, data["demorse"])
             if cin.strip() == encoded.strip():
                 print "Correct!"
@@ -54,8 +70,8 @@ def translate(data, curstats):
             encoded = encodeString(sentence, data["morse"])
             print encoded
             decoded = decodeString(encoded, data["demorse"]) # yay edge cases again
-            cin = raw_input()
-            if cin == "/exit" or cin == "/exit!":
+            cin, pcval = utils.getInput(curstats, data, "Translate the following Morse Code into English:\n"+encoded)
+            if pcval == -1:
                 print "Exiting Translate Mode."
                 return cin
             if cin.upper().strip() == decoded.strip():
