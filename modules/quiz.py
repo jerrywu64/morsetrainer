@@ -92,7 +92,7 @@ def quiz(curstats, data):
         turns = turns + 1
         starttime = time.clock()
         if random.randint(0, 1) == 0:
-            letter = utils.getKey(data["letters"], lastused, turns, curstats, data["debug"]) 
+            letter = utils.getKey(data["letters"], lastused, turns, curstats.wins, curstats.losses, data["debug"]) 
             lastused[letter] = turns
             lastused[data["morse"][letter]] = turns
             print "Type the code for: "+letter
@@ -108,7 +108,7 @@ def quiz(curstats, data):
                 return cin
             processAnswer(cin.upper(), partime, starttime, letter, data["morse"][letter], curstats)
         else:
-            code = utils.getKey(data["codes"], lastused, turns, curstats, data["debug"]) 
+            code = utils.getKey(data["codes"], lastused, turns, curstats.wins, curstats.losses, data["debug"]) 
             lastused[code] = turns
             lastused[data["demorse"][code]] = turns
             print "Type the character for: "+code

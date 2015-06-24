@@ -12,8 +12,7 @@ def printStartText():
     print "As in Quiz Mode, type \"//\" if you don't know the answer."
     print "Type \"/replay\" to replay the sound."
     print "As a reminder, type \"/exit\" to exit."
-    print "Stats are not currently being tracked for Listen Mode, so"
-    print "/stats will give stats for Quiz Mode."
+    print "Right now, Quiz Mode and Listen Mode stats are not distinct."
 
 def playCode(code, tunit):
     freq = 800 # Frequency in Hertz
@@ -71,7 +70,7 @@ def listen(curstats, data):
     while True:
         turns = turns + 1
         # starttime = time.clock()
-        key = utils.getKey(data["codes"], lastused, turns, curstats, data["debug"]) 
+        key = utils.getKey(data["codes"], lastused, turns, curstats.wins, curstats.losses, data["debug"]) 
         lastused[key] = turns
         lastused[data["demorse"][key]] = turns
         print "Type the character for the following: "
@@ -93,5 +92,5 @@ def listen(curstats, data):
         while cin == "/replay" or cin == "/repeat":
             playCode(key, tunit)
             cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.")
-        quiz.processAnswer(cin.upper(), 0, 0, key, data["demorse"][key], None)
+        quiz.processAnswer(cin.upper(), 0, 0, key, data["demorse"][key], curstats)
 

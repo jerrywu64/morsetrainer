@@ -1,12 +1,12 @@
 import random
 
 # Generates a random element from arr.
-def getKey(arr, lastused, turns, curstats, debug = False): 
+def getKey(arr, lastused, turns, wins, losses, debug = False): 
     best = -99999999
     worst = 99999999
     lru = turns
     for key in arr:
-        diff = curstats.wins[key] - curstats.losses[key]
+        diff = wins[key] - losses[key]
         if diff > best:
             best = diff
         if diff < worst:
@@ -18,15 +18,15 @@ def getKey(arr, lastused, turns, curstats, debug = False):
         print worst
         print lru
     key = arr[random.randint(0, len(arr)-1)]
-    while (best > worst and random.randint(1, (best - worst)) > (curstats.losses[key] - curstats.wins[key] + best)) or random.randint(1, turns - lru) > turns - lastused[key]:
+    while (best > worst and random.randint(1, (best - worst)) > (losses[key] - wins[key] + best)) or random.randint(1, turns - lru) > turns - lastused[key]:
         key = arr[random.randint(0, len(arr) - 1)]
     if debug:
         print "Generated key: "+key
-        print "Stats: " + str(curstats.wins[key]) + " " + str(curstats.losses[key])
+        print "Stats: " + str(wins[key]) + " " + str(losses[key])
         if best == worst:
             print "Best == worst right now."
         else:
-            print "Relative probability 1: "+ str(curstats.losses[key] - curstats.wins[key] + best) + " / " + str(best - worst)
+            print "Relative probability 1: "+ str(losses[key] - wins[key] + best) + " / " + str(best - worst)
         print "Relative probability 2: " + str(turns - lastused[key])+ " / " + str(turns - lru)
     return key
 
