@@ -8,7 +8,9 @@ class Stats():
         print "Welcome to Morsetrainer!"
         print "Enter your username. If you don't have one,"
         print "just pick a new one and enter it."
-        self.username = raw_input()
+        self.username = ""
+        while self.username == "":
+            self.username = raw_input().strip()
         self.wins = {}
         self.losses = {}
         self.tbonsu = {}
@@ -43,7 +45,6 @@ class Stats():
             print "Welcome back, "+self.username+"."
             self.stats()
         except:
-            raise
             print "Welcome, "+self.username+". I see you are a new user."
             print "Just follow the instructions and everything should be ok."
             for key in data["letters"]:
@@ -65,11 +66,14 @@ class Stats():
     def stats(self, data = None):
         print "Your current unweighted overall stats are "
         print str(self.tw)+" successes out of "+str(self.tw+self.tl)+" attempts"
-        print "which is " + str(100. * self.tw / (self.tw + self.tl)) + "%."
+        if self.tw + self.tl > 0:
+            print "which is " + str(100. * self.tw / (self.tw + self.tl)) + "%."
         print "Including time bonuses, your overall stats are "
         print str(self.tw + self.ttb)+" points out of "+str(self.tw + self.tl)+"."
-        print "which is " + str(100. * (self.tw + self.ttb) / (self.tw + self.tl)) + "%."
-        print "Your average time bonus per correct answer is " + str(self.ttb / self.tw) + "."
+        if self.tw + self.tl > 0:
+            print "which is " + str(100. * (self.tw + self.ttb) / (self.tw + self.tl)) + "%."
+        if self.tw > 0:
+            print "Your average time bonus per correct answer is " + str(self.ttb / self.tw) + "."
         if not data == None:
             print "Here are stats for each letter and code (key success fail):"
             for key in data["letters"]:
