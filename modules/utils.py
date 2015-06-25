@@ -21,7 +21,7 @@ def getKey(arr, lastused, turns, wins, losses, debug = False):
     while (best > worst and random.randint(1, (best - worst)) > (losses[key] - wins[key] + best)) or random.randint(1, turns - lru) > turns - lastused[key]:
         key = arr[random.randint(0, len(arr) - 1)]
     if debug:
-        print "Generated key: "+key
+        # print "Generated key: "+key
         print "Stats: " + str(wins[key]) + " " + str(losses[key])
         if best == worst:
             print "Best == worst right now."
