@@ -30,7 +30,7 @@ def getKey(arr, lastused, turns, wins, losses, debug = False):
         print "Relative probability 2: " + str(turns - lastused[key])+ " / " + str(turns - lru)
     return key
 
-def processCommand(cmd, curstats, data):
+def processCommand(cmd, curstats, data, addedcmd = []):
     if cmd == "/stats":
         curstats.stats()
         return 1
@@ -98,16 +98,16 @@ def processCommand(cmd, curstats, data):
             print "Aborted ragequit attempt."
             return 1
         return -1
-    if len(cmd) > 2 and cmd[0] == "/":
+    if len(cmd) > 2 and cmd[0] == "/" and cmd not in addedcmd:
         print "That's not a valid command."
         return 1
     return 0
 
-def getInput(curstats, data, text = ""):
+def getInput(curstats, data, text = "", addedcmd = []):
     cin = raw_input()
-    pcval = processCommand(cin.lower(), curstats, data)
+    pcval = processCommand(cin.lower(), curstats, data, addedcmd)
     while pcval > 0:
         cin = raw_input(text + "\n")
-        pcval = processCommand(cin.lower(), curstats, data)
+        pcval = processCommand(cin.lower(), curstats, data, addedcmd)
     return cin, pcval
 

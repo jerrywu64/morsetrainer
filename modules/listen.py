@@ -66,6 +66,9 @@ def listen(curstats, data):
     lastused = {}
     for key in curstats.wins:
         lastused[key] = 0
+    adcmd = []
+    adcmd.append("/replay")
+    adcmd.append("/repeat")
 
     while True:
         turns = turns + 1
@@ -75,22 +78,22 @@ def listen(curstats, data):
         lastused[data["demorse"][key]] = turns
         print "Type the character for the following: "
         playCode(key, tunit)
-        cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.")
+        cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.", adcmd)
         while cin == "/replay" or cin == "/repeat": 
             playCode(key, tunit)
-            cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.")
+            cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.", adcmd)
         
         if cin == "//" or cin == "??" or cin == "idk":
             print "Okay, the correct answer is: ", data["demorse"][key]
             print "Try it!"
             # curstats.losses[key] = curstats.losses[key] + 1
             # curstats.tl = curstats.tl + 1
-            cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.")
+            cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.", adcmd)
         if pcval == -1:
             print "Exiting Listen Mode."
             return cin
         while cin == "/replay" or cin == "/repeat":
             playCode(key, tunit)
-            cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.")
+            cin, pcval = utils.getInput(curstats, data, "Type /replay to replay the code.", adcmd)
         quiz.processAnswer(cin.upper(), 0, 0, key, data["demorse"][key], curstats)
 
