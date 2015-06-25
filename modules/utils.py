@@ -43,6 +43,11 @@ def processCommand(cmd, curstats, data):
         return 1
     if cmd == "/exit" or cmd == ":wq" or cmd == "/exit!": # because apparently I accidentally use vim commands sometimes
         return -1
+    if cmd == "/buzzer":
+        print "Wow, an easter egg!"
+        curstats.buzzer = not curstats.buzzer
+        return 1
+
     if cmd == "/help":
         print "Available commands:"
         print "/stats: Brief summary of current stats."
@@ -93,7 +98,9 @@ def processCommand(cmd, curstats, data):
             print "Aborted ragequit attempt."
             return 1
         return -1
-
+    if len(cmd) > 2 and cmd[0] == "/":
+        print "That's not a valid command."
+        return 1
     return 0
 
 def getInput(curstats, data, text = ""):

@@ -23,6 +23,7 @@ class Stats():
         self.ltw = 0
         self.ltl = 0
         self.lttb =0
+        self.buzzer = False
         try:
             statsfile = open(self.username+".stats", "r")
             for line in statsfile:
