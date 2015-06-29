@@ -60,20 +60,61 @@ def processCommand(cmd, curstats, data, addedcmd = []):
         print "/rq: Exits the program without saving stats."
         return 1
     if cmd == "/update":
-        for key in data["letters"]:
-            if key not in curstats.wins:
-                curstats.wins[key] = 0
-            if key not in curstats.losses:
-                curstats.losses[key] = 0
-            if key not in curstats.tbonsu:
-                curstats.tbonsu[key] = 0
-        for key in data["codes"]:
-            if key not in curstats.wins:
-                curstats.wins[key] = 0
-            if key not in curstats.losses:
-                curstats.losses[key] = 0
-            if key not in curstats.tbonsu:
-                curstats.tbonsu[key] = 0
+        try:
+            for key in data["letters"]:
+                if key not in curstats.wins:
+                    curstats.wins[key] = 0
+                if key not in curstats.losses:
+                    curstats.losses[key] = 0
+                if key not in curstats.tbonsu:
+                    curstats.tbonsu[key] = 0
+            for key in data["codes"]:
+                if key not in curstats.wins:
+                    curstats.wins[key] = 0
+                if key not in curstats.losses:
+                    curstats.losses[key] = 0
+                if key not in curstats.tbonsu:
+                    curstats.tbonsu[key] = 0
+            print "Updated stats for "+curstats.name+ " Mode, "
+            print "although you should consider exiting to the "
+            print "main selection area and running /update there."
+        except AttributeError:
+            for key in data["letters"]:
+                if key not in curstats.quiz.wins:
+                    curstats.quiz.wins[key] = 0
+                if key not in curstats.quiz.losses:
+                    curstats.quiz.losses[key] = 0
+                if key not in curstats.quiz.tbonsu:
+                    curstats.quiz.tbonsu[key] = 0
+                if key not in curstats.listen.wins:
+                    curstats.listen.wins[key] = 0
+                if key not in curstats.listen.losses:
+                    curstats.listen.losses[key] = 0
+                if key not in curstats.listen.tbonsu:
+                    curstats.listen.tbonsu[key] = 0
+                if key not in curstats.keys:
+                    curstats.keys.append(key)
+
+            for key in data["codes"]:
+                if key not in curstats.quiz.wins:
+                    curstats.quiz.wins[key] = 0
+                if key not in curstats.quiz.losses:
+                    curstats.quiz.losses[key] = 0
+                if key not in curstats.quiz.tbonsu:
+                    curstats.quiz.tbonsu[key] = 0
+                if key not in curstats.listen.wins:
+                    curstats.listen.wins[key] = 0
+                if key not in curstats.listen.losses:
+                    curstats.listen.losses[key] = 0
+                if key not in curstats.listen.tbonsu:
+                    curstats.listen.tbonsu[key] = 0
+                if key not in curstats.keys:
+                    curstats.keys.append(key)
+
+               
+
+            
+
         print "Update successful."
         return 1
     if cmd == "/reset":

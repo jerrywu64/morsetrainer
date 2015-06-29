@@ -35,19 +35,19 @@ try:
         elif cin == "quiz":
             # Run quiz mode, and track the return value
             # so we can see if we're exiting the program itself.
-            lastcmd = quiz(curstats, data)
+            lastcmd = quiz(curstats.quiz, data)
             if lastcmd == "/exit!" or lastcmd == "/rq": # Kind of hacky but w/e
                 break
             print "Type \"/exit\" to exit Morsetrainer, or "
             print "enter a command or select a mode."
         elif cin == "translate":
-            lastcmd = translate(curstats, data)
+            lastcmd = translate(curstats.quiz, data)
             if lastcmd == "/exit!" or lastcmd == "/rq":
                 break
             print "Type \"/exit\" to exit Morsetrainer, or "
             print "enter a command or select a mode."
         elif cin == "listen":
-            lastcmd = listen(curstats, data)
+            lastcmd = listen(curstats.listen, data)
             if lastcmd == "/exit!" or lastcmd == "/rq":
                 break
             print "Type \"/exit\" to exit Morsetrainer, or "

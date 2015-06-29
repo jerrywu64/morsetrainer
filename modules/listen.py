@@ -57,8 +57,10 @@ def listen(curstats, data):
             tunit = int(tunit)
             if tunit <= 0:
                 print "Specify a positive integer time."
+            tunit = tunit + 0 # Verify that it's not a string somehow
         except:
             print "Specify a positive integer time."
+            tunit = -1
 
 
     # Trackers so more recent keys aren't as likely to be generated.
