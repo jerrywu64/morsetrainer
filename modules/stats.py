@@ -88,19 +88,26 @@ class Stats():
             print "Welcome, "+self.username+". I see you are a new user."
             print "Just follow the instructions and everything should be ok."
             for key in data["letters"]:
-                self.wins[key] = 0
-                self.losses[key] = 0
-                self.tbonsu[key] = 0.
-                self.lwins[key] = 0
-                self.llosses[key] = 0
-                self.ltbonsu[key] = 0.
+                quizline = []
+                listenline = []
+                quizline.append(key)
+                listenline.append(key)
+                for i in xrange(0, 3):
+                    quizline.append(0)
+                    listenline.append(0)
+                quizlines.append(quizline)
+                listenlines.append(listenline)
+
             for key in data["codes"]:
-                self.wins[key] = 0
-                self.losses[key] = 0
-                self.tbonsu[key] = 0.
-                self.lwins[key] = 0
-                self.llosses[key] = 0
-                self.ltbonsu[key] = 0.
+                quizline = []
+                listenline = []
+                quizline.append(key)
+                listenline.append(key)
+                for i in xrange(0, 3):
+                    quizline.append(0)
+                    listenline.append(0)
+                quizlines.append(quizline)
+                listenlines.append(listenline)
         self.quiz = StatsModule(data, quizlines, "Quiz", self.username)
         self.listen = StatsModule(data, listenlines, "Listen", self.username)
         if not newuser:

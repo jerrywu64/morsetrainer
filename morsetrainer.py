@@ -2,7 +2,9 @@ from modules.quiz import quiz
 from modules.stats import Stats
 from modules.translate import translate
 from modules.listen import listen
+from modules.transcribe import transcribe
 import modules.utils as utils
+
 
 # Read in characters and codes from file
 data={}
@@ -52,6 +54,13 @@ try:
                 break
             print "Type \"/exit\" to exit Morsetrainer, or "
             print "enter a command or select a mode."
+        elif cin == "transcribe":
+            lastcmd = transcribe(curstats.listen, data)
+            if lastcmd == "/exit!" or lastcmd == "/rq":
+                break
+            print "Type \"/exit\" to exit Morsetrainer, or "
+            print "enter a command or select a mode."
+
         else:
             print "That's not a valid input."
 

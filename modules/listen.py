@@ -3,6 +3,7 @@ import utils
 import time
 import winsound
 import quiz
+import threading
 
 def printStartText():
     print "Welcome to Listen Mode!"
@@ -14,6 +15,13 @@ def printStartText():
     print "As a reminder, type \"/exit\" to exit."
     print "Right now, Quiz Mode and Listen Mode stats are not distinct."
 
+def run_async(f):
+    def g(*args, **kwargs):
+        threading.Thread(target=f, args=args, kwargs=kwargs).start()
+    return g
+
+
+@run_async
 def playCode(code, tunit):
     freq = 800 # Frequency in Hertz
     prior = 0 # Track prior character to robustly pause between beeps
@@ -43,8 +51,7 @@ def playCode(code, tunit):
             continue
     return   
 
-def listen(curstats, data):
-    printStartText()
+def inputTUnit(curstats, data):
     print "Specify a unit time in milliseconds. This will be the length"
     print "of a dot. The recommended time is 120. Note that the sound"
     print "may not play correctly if the unit time is too short."
@@ -52,7 +59,7 @@ def listen(curstats, data):
     while tunit <= 0:
         tunit, pcval = utils.getInput(curstats, data, "Specify a unit time in ms.")
         if pcval == -1:
-            return tunit
+            return tunit, pcval
         try:
             tunit = int(tunit)
             if tunit <= 0:
@@ -61,6 +68,14 @@ def listen(curstats, data):
         except:
             print "Specify a positive integer time."
             tunit = -1
+    return tunit, 0
+
+
+def listen(curstats, data):
+    printStartText()
+    tunit, pcval = inputTUnit(curstats, data)
+    if pcval == -1:
+        return tunit
 
 
     # Trackers so more recent keys aren't as likely to be generated.
