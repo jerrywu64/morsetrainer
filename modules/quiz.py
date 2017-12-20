@@ -1,7 +1,7 @@
 import random
 import utils
 import time
-import winsound
+# import winsound
 
 def processAnswer(cin, partime, starttime, key, answer, curstats):
     if cin == answer:
@@ -23,8 +23,8 @@ def processAnswer(cin, partime, starttime, key, answer, curstats):
         if curstats is not None:
             curstats.losses[key] = curstats.losses[key] + 1
             curstats.tl = curstats.tl + 1
-            if curstats.buzzer:
-                winsound.Beep(400, 600)
+            # if curstats.buzzer:
+            #     winsound.Beep(400, 600)
 
     print ""
     return

@@ -1,7 +1,6 @@
 import random
 import utils
 import time
-import winsound
 import translate
 import listen
 

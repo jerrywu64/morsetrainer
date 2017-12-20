@@ -1,7 +1,9 @@
 import random
+import platform
+
 
 # Generates a random element from arr.
-def getKey(arr, lastused, turns, wins, losses, debug = False): 
+def getKey(arr, lastused, turns, wins, losses, debug=False):
     best = -99999999
     worst = 99999999
     lru = turns
@@ -29,6 +31,7 @@ def getKey(arr, lastused, turns, wins, losses, debug = False):
             print "Relative probability 1: "+ str(losses[key] - wins[key] + best) + " / " + str(best - worst)
         print "Relative probability 2: " + str(turns - lastused[key])+ " / " + str(turns - lru)
     return key
+
 
 def processCommand(cmd, curstats, data, addedcmd = []):
     if cmd == "/stats":
@@ -111,10 +114,6 @@ def processCommand(cmd, curstats, data, addedcmd = []):
                 if key not in curstats.keys:
                     curstats.keys.append(key)
 
-               
-
-            
-
         print "Update successful."
         return 1
     if cmd == "/reset":
@@ -144,7 +143,8 @@ def processCommand(cmd, curstats, data, addedcmd = []):
         return 1
     return 0
 
-def getInput(curstats, data, text = "", addedcmd = []):
+
+def getInput(curstats, data, text="", addedcmd=[]):
     cin = raw_input()
     pcval = processCommand(cin.lower(), curstats, data, addedcmd)
     while pcval > 0:
@@ -152,3 +152,17 @@ def getInput(curstats, data, text = "", addedcmd = []):
         pcval = processCommand(cin.lower(), curstats, data, addedcmd)
     return cin, pcval
 
+
+if platform.system() == "Windows":
+    import winsound
+
+    def beep(freq, duration):
+        winsound.Beep(freq, duration)
+else:
+    import subprocess
+
+    def beep(freq, duration):
+        duration = duration / 1000.  # convert to seconds
+        subprocess.check_call([
+            "play", "--no-show-progress", "--null", "--channels", "1", "synth",
+            str(duration), "sine", str(freq)])

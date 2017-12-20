@@ -1,7 +1,6 @@
 import random
 import utils
 import time
-import winsound
 import quiz
 import threading
 
@@ -31,14 +30,14 @@ def playCode(code, tunit):
                 time.sleep(tunit / 1000.) # 1 unit between beeps
             if prior == -1:
                 time.sleep(tunit / 1000. * 3) # 3 units between chars
-            winsound.Beep(freq, tunit)
+            utils.beep(freq, tunit)
             prior = 0
         elif char == '-' or char == '=':
             if prior == 0:
                 time.sleep(tunit / 1000.)
             if prior == -1:
                 time.sleep(tunit / 1000. * 3) # 3 units between chars
-            winsound.Beep(freq, 3 * tunit)
+            utils.beep(freq, 3 * tunit)
             prior = 0
         elif char == " ":
             if not prior == 1:
